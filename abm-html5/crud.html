@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ABM con Bootstrap</title>
+	<!-- Agregar los archivos de Bootstrap y jQuery -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+		integrity="sha384-QnIzLs7de95afvu00YwYB1Knn0ZIilCvTttfW0em2z0KjyHZZmJczJK27ebwM0Hf"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<style>
+		.actions {
+		width: 120px;
+		}
+
+		.editar {
+		margin-right: 5px;
+		}
+
+		.eliminar {
+		margin-right: 5px;
+		}
+	</style>
+</head>
+<main class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="text-center mt-4">ABM de Usuarios</h1>
+		</div>
+	</div>
+
+	<!-- Pantalla de búsqueda -->
+	<div class="row mt-4">
+		<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+			<form>
+				<div class="form-group">
+					<label for="nombre-busqueda">Buscar por Nombre:</label>
+					<input type="text" id="nombre-busqueda" name="nombre-busqueda" class="form-control">
+				</div>
+
+				<div class="form-group">
+					<label for="email-busqueda">Buscar por Email:</label>
+					<input type="email" id="email-busqueda" name="email-busqueda" class="form-control">
+				</div>
+
+				<button type="submit" class="btn btn-primary">Buscar</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Botón de Crear Usuario -->
+	<div class="row mt-4">
+		<div class="col-lg-12">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crear-usuario-modal">Crear Usuario</button>
+		</div>
+	</div>
+
+	<!-- Tabla de Usuarios -->
+	<div class="row mt-4">
+		<div class="col-lg-12">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Email</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Usuario 1</td>
+						<td>usuario1@example.com</td>
+						<td>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editar-usuario-modal">Editar</button>
+							<button type="button" class="btn btn-danger">Eliminar</button>
+						</td>
+					</tr>
+					<tr>
+						<td>Usuario 2</td>
+						<td>usuario2@example.com</td>
+						<td>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editar-usuario-modal">Editar</button>
+							<button type="button" class="btn btn-danger">Eliminar</button>
+						</td>
+					</tr>
+					<!-- Se agregan más filas para cada registro existente-->
+				</tbody>
+			</table>
+		</div>
+	</div>
+</main>
+
+<script>
+	// Agregar eventos a los botones de la tabla
+	const tabla = document.getElementById('tabla');
+	tabla.addEventListener('click', e => {
+		if (e.target.classList.contains('editar')) {
+			// Obtener los valores de la fila
+			const fila = e.target.closest('tr');
+			const nombre = fila.querySelector('td:nth-of-type(1)').textContent;
+			const apellido = fila.querySelector('td:nth-of-type(2)').textContent;
+			const email = fila.querySelector('td:nth-of-type(3)').textContent;
+
+			// Mostrar los valores en el formulario
+			document.getElementById('nombre').value = nombre;
+			document.getElementById('apellido').value = apellido;
+			document.getElementById('email').value = email;
+		} else if (e.target.classList.contains('eliminar')) {
+			// Eliminar la fila
+			const fila = e.target.closest('tr');
+			fila.remove();
+		}
+	});
+
+	// Agregar eventos al formulario
+	const formulario = document.getElementById('formulario');
+	formulario.addEventListener('submit', e => {
+		e.preventDefault();
+
+		// Obtener los valores del formulario
+		const nombre = document.getElementById('nombre').value;
+		const apellido = document.getElementById('apellido').value;
+		const email = document.getElementById('email').value;
+
+		// Agregar los valores a la tabla
+		const tabla = document.getElementById('tabla');
+		const fila = document.createElement('tr');
+		fila.innerHTML = `
+			<td>${nombre}</td>
+			<td>${apellido}</td>
+			<td>${email}</td>
+			<td class="actions">
+				<button class="editar">Editar</button>
+				<button class="eliminar">Eliminar</button>
+			</td>
+		`;
+		tabla.querySelector('tbody').appendChild(fila);
+
+		// Limpiar el formulario
+		formulario.reset();
+	});
+</script>
+
+
